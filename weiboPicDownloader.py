@@ -355,9 +355,13 @@ def download(url, path, overwrite):
 def main(*paras):
     if paras:
         paras = list(map(str, paras))
-        args = parser.parse_args(nargs_fit(parser, paras))
     else:
-        args = parser.parse_args(nargs_fit(parser, sys.argv[1:]))
+        paras = sys.argv[1:] 
+    paras = nargs_fit(parser, paras)
+    if not paras:
+        paras = ['-h']    
+    args = parser.parse_args(paras)
+
     if args.users:
         users = args.users
     elif args.files:
