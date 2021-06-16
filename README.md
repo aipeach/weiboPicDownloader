@@ -1,4 +1,15 @@
-# weiboPicDownloader ![](https://img.shields.io/badge/python-3.7+-blue.svg)
+# weiboPicDownloader (fork) ![](https://img.shields.io/badge/python-3.7+-blue.svg)
+
+Forked from https://github.com/nondanee/weiboPicDownloader
+
+Major improvements:
+* Now can download posts with more than 9 pictures, also fixed some bugs
+* Cleanup text from the weibo when used in name template
+* Refactored as a module for easier incorporating into other Python scripts/projects. It now returns `nickname`, `uid`, `newest_bid` upon finishing too.
+
+Breaking changes:
+* Dropped Python 2 support
+* `-b` (boundary) now is non-inclusive on the left-side (earlier date). This is done to make it easier to update (so you can use `-b last_checked_bid:` to only download new posts without overlapping).
 
 Weibo user album batch download tool (CLI)
 
@@ -59,13 +70,13 @@ Optional arguments
 - `-i interval` request interval (default value: `1`, unit: second)
 - `-c cookie` login credential (only need the value of a certain key named `SUB`)
 - `-b boundary` mid/bid/date range of weibos (format: `id:id` between, `:id` before, `id:` after, `id` certain, `:` all)
-- `-n name` naming template (identifier: `url`, `index`, `type`, `mid`, `bid`, `date`, `text`, `name`, like ["f-Strings"](https://www.python.org/dev/peps/pep-0498/#abstract) syntax)
+- `-n name` naming template (identifier: `url`, `index`, `type`, `mid`, `bid`, `date`, `text`, `name`, `uid`,  like ["f-Strings"](https://www.python.org/dev/peps/pep-0498/#abstract) syntax)
 - `-v` download miaopai videos at the same time
 - `-o` overwrite existing files (skipping if exists for default)
 
 ✳How to get the value of `SUB` from browser (Chrome for example)
 
-1. jump to https://m.weibo.cn and log in
-2. inspect > Application > Cookies > https://m.weibo.cn
-3. double click the `SUB` line and copy its value
-4. paste it into terminal and run like  `-c <value>`
+1. Go to https://m.weibo.cn and log in
+2. Inspect > Application > Cookies > https://m.weibo.cn
+3. Double click the `SUB` line and copy its value
+4. Paste it into terminal and run like  `-c <value>`

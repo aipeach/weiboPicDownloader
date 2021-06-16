@@ -1,4 +1,6 @@
-# Forked from https://github.com/nondanee/weiboPicDownloader 以下基本保留，未修改
+# Forked from https://github.com/nondanee/weiboPicDownloader 
+
+以下基本保留，未修改，请参见英文文档
 
 # (免)登录下载微博图片 ![](https://img.shields.io/badge/python-3.7+-blue.svg)
 
