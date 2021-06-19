@@ -252,7 +252,7 @@ def get_resources(uid, video, interval, limit, token):
                     if 'pics' in mblog:
                         if mblog['pic_num'] > 9:  # More than 9 images
                             blog_url = card['scheme']
-                            print_fit(f'Find more than 9 pictures for {blog_url}!')
+                            print_fit(f'Find more than 9 pictures for {blog_url}')
                             with request_fit('GET', blog_url, cookie=token) as r:
                                 m = re.search(r'var \$render_data = \[(.+)\]\[0\] \|\| {};', r.text, flags=re.DOTALL)
                                 if not m:
@@ -332,8 +332,11 @@ def download(url, path, overwrite):
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         f.write(chunk)
-        if response.url != url: # unfuck default_d_h_large.gif
-            raise Exception(f'{url} got redirected to {response.url}. Re-download...')
+        if response.url != url: # default_d_h_large.gif. Retrying doesn't seem to be able to fix it anymore.
+            print_fit(f'[Warning] {url} got redirected to {response.url}. Likely the image is "harmonized".')
+            path_temp = path.with_name(path.stem + '.missing' + path.suffix)
+            path = path.rename(path_temp)
+            # raise Exception(f'{url} got redirected to {response.url}. Re-download...')
         size = path.stat().st_size
         if size != expected_size:
             raise Exception(f'{path.name.split(" ")[-1]}: filesize doesn\'t match header ({expected_size} -> {size}). Re-download...')
