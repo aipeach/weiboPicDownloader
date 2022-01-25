@@ -240,7 +240,6 @@ def get_resources(uid, video, interval, limit, token):
                     else:
                         text = mblog['text']
                     mark = {'uid': uid, 'mid': mid, 'bid': mblog['bid'], 'date': date, 'text': text}
-                    amount += 1
                     # Try to get username again
                     if 'screen_name' not in info and str(mblog['user']['id']) == uid:
                         info['screen_name'] = mblog['user']['screen_name']
@@ -249,6 +248,7 @@ def get_resources(uid, video, interval, limit, token):
 
                     if compare(limit[0], '>=', [mid, date]): exceed = True
                     if compare(limit[0], '>=', [mid, date]) or compare(limit[1], '<', [mid, date]): continue
+                    amount += 1 # only count if not skipped
                     if 'pics' in mblog:
                         if mblog['pic_num'] > 9:  # More than 9 images
                             blog_url = card['scheme']
@@ -279,6 +279,8 @@ def get_resources(uid, video, interval, limit, token):
     print_fit('Practically scanned {} weibos, get {} {}'.format(amount, len(resources), 'resources' if video else 'pictures'))
     # with open(f"json_backup/{uid}.json", "w", encoding='utf-8') as f1:
     #     json.dump(resources, f1, indent=2, default=json_serial)
+    info['weibos_scanned'] = amount
+    info['resources_found'] = len(resources)
     return resources, info
 
 def json_serial(obj):
@@ -404,7 +406,8 @@ def main(*paras):
     token = 'SUB={}'.format(args.cookie) if args.cookie else None
     pool = concurrent.futures.ThreadPoolExecutor(max_workers = args.size)
 
-    newest_bid = ''
+    results = []
+
     for number, user in enumerate(users, 1):
 
         print_fit('{}/{} {}'.format(number, len(users), time.ctime()))
@@ -434,13 +437,18 @@ def main(*paras):
                 resources, info = get_resources(uid, args.video, args.interval, boundary, token)
             except KeyboardInterrupt:
                 quit()
-
+        result = {
+            'uid': uid,
+            'nickname': nickname,
+            'newest_bid': ''
+        }    
+        # Rename screen_name to nickname for compatibility.
         if info.get('screen_name', None):
-            nickname = info['screen_name']
-        if info.get('newest_bid', None):
-            newest_bid = info['newest_bid']
+            info['nickname'] = info['screen_name']
+            del info['screen_name']
+        
+        result.update(info)
 
-        # quit()
         album = base / nickname
         if resources and not album.exists(): album.mkdir()
         retry = 0
@@ -488,8 +496,9 @@ def main(*paras):
 
         for resource in resources: print_fit('{} {} failed'.format(resource['url'], format_name(resource, args.name)))
         print_fit('-' * 30)
+        results.append(result)
     print_fit('Done!')
-    return(nickname, uid, newest_bid)
+    return results
 
 
 if __name__ == "__main__":
