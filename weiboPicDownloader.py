@@ -175,6 +175,12 @@ def bid_to_mid(string):
     return int(''.join(map(convert, splited)))
 
 def parse_date(text):
+    # It's now in format of 'Sat Aug 01 00:59:22 +0800 2020' so a simple dateutil.parser is enough.
+    try:
+        my_time = dateutil.parser.parse(text)
+        return my_time.date()
+    except:
+        pass
     now = datetime.datetime.now()
     if '前' in text:
         if '小时' in text:
@@ -183,11 +189,6 @@ def parse_date(text):
             return now.date()
     if '昨天' in text:
         return now.date() - datetime.timedelta(days = 1)
-    try:
-        my_time = dateutil.parser.parse(text)
-        return my_time.date()
-    except:
-        pass
     if re.search(r'^[\d|-]+$', text):
         return datetime.datetime.strptime(((str(now.year) + '-') if not re.search(r'^\d{4}', text) else '') + text, '%Y-%m-%d').date()
 
