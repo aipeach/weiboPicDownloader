@@ -232,7 +232,13 @@ def get_resources(uid, video, interval, limit, token):
             for card in cards:
                 if 'mblog' in card:
                     mblog = card['mblog']
-                    if 'isTop' in mblog and mblog['isTop']: continue
+
+                    # We check if a post is sticky. Sticky post will NOT be used to when see if we have reached the limit or not;
+                    # but will still be processed if within the interval.
+                    is_top = False
+                    if 'isTop' in mblog and mblog['isTop']: is_top = True
+                    if 'mblogtype' in mblog and mblog['mblogtype'] == 2: is_top = True
+
                     mid = int(mblog['mid'])
                     date = parse_date(mblog['created_at'])
                     if 'raw_text' in mblog:
@@ -243,10 +249,10 @@ def get_resources(uid, video, interval, limit, token):
                     # Try to get username again
                     if 'screen_name' not in info and str(mblog['user']['id']) == uid:
                         info['screen_name'] = mblog['user']['screen_name']
-                    if 'newest_bid' not in info: #Save newest bid
+                    if not is_top and 'newest_bid' not in info: #Save newest bid
                         info['newest_bid'] = mblog['bid']
 
-                    if compare(limit[0], '>=', [mid, date]): exceed = True
+                    if not is_top and compare(limit[0], '>=', [mid, date]): exceed = True
                     if compare(limit[0], '>=', [mid, date]) or compare(limit[1], '<', [mid, date]): continue
                     amount += 1 # only count if not skipped
                     if 'pics' in mblog:
@@ -361,10 +367,10 @@ def main(*paras):
     if paras:
         paras = list(map(str, paras))
     else:
-        paras = sys.argv[1:] 
+        paras = sys.argv[1:]
     paras = nargs_fit(parser, paras)
     if not paras:
-        paras = ['-h']    
+        paras = ['-h']
     args = parser.parse_args(paras)
 
     if args.users:
@@ -441,12 +447,12 @@ def main(*paras):
             'uid': uid,
             'nickname': nickname,
             'newest_bid': ''
-        }    
+        }
         # Rename screen_name to nickname for compatibility.
         if info.get('screen_name', None):
             info['nickname'] = info['screen_name']
             del info['screen_name']
-        
+
         result.update(info)
 
         album = base / nickname
