@@ -20,8 +20,8 @@ for more weibo free login APIs, turn to [wiki](https://github.com/nondanee/weibo
 ## References
 
 * [nondanee/weiboPicDownloader](https://github.com/nondanee/weiboPicDownloader) (original repo)
-* [yAnXImIN/weiboPicDownloader](https://github.com/yAnXImIN/weiboPicDownloader)  
-* [ningshu/weiboPicDownloader](https://github.com/ningshu/weiboPicDownloader) 
+* [yAnXImIN/weiboPicDownloader](https://github.com/yAnXImIN/weiboPicDownloader)
+* [ningshu/weiboPicDownloader](https://github.com/ningshu/weiboPicDownloader)
 
 ## Overview
 
@@ -69,12 +69,12 @@ Optional arguments
 - `-r retry` max retries (default value: `2`)
 - `-i interval` request interval (default value: `1`, unit: second)
 - `-c cookie` login credential (only need the value of a certain key named `SUB`)
-- `-b boundary` mid/bid/date range of weibos (format: `id:id` between, `:id` before, `id:` after, `id` certain, `:` all). Use `@%Y%m%d` (like `@20220520` for date; otherwise integers would be considered as mid.)
+- `-b boundary` mid/bid/date range of weibos (format: `id:id` between, `:id` before, `id:` after, `id` certain, `:` all). Use `@%Y%m%d` (like `@20220520`) for date; otherwise integers would be considered as mid.
 - `-n name` naming template (identifier: `url`, `index`, `type`, `mid`, `bid`, `date`, `text`, `name`, `uid`,  like ["f-Strings"](https://www.python.org/dev/peps/pep-0498/#abstract) syntax)
 - `-v` download miaopai videos at the same time
 - `-o` overwrite existing files (skipping if exists for default)
 
-*✳How to get the value of `SUB` from browser (Chrome for example)
+* ✳How to get the value of `SUB` from browser (Chrome for example)
 
 1. Go to https://m.weibo.cn and log in
 2. Inspect > Application > Cookies > https://m.weibo.cn
