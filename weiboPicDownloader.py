@@ -298,14 +298,14 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError ("Type %s not serializable" % type(obj))
 
+def safeify(s):
+    template = {u'\\': u'＼', u'/': u'／', u':': u'：', u'*': u'＊', u'?': u'？', u'"': u'＂', u'<': u'＜', u'>': u'＞', u'|': u'｜'}
+    for illegal in template:
+        s = s.replace(illegal, template[illegal])
+    return s
+
 def format_name(item, template):
     item['name'] = re.sub(r'\?\S+$', '', re.sub(r'^\S+/', '', item['url']))
-
-    def safeify(name):
-        template = {u'\\': u'＼', u'/': u'／', u':': u'：', u'*': u'＊', u'?': u'？', u'"': u'＂', u'<': u'＜', u'>': u'＞', u'|': u'｜'}
-        for illegal in template:
-            name = name.replace(illegal, template[illegal])
-        return name
 
     def substitute(matched):
         key = matched.group(1).split(':')
@@ -457,7 +457,7 @@ def main(*paras):
 
         result.update(info)
 
-        album = base / nickname
+        album = base / safeify(info['nickname'])
         if resources and not album.exists(): album.mkdir()
         retry = 0
         while resources and retry <= args.retry:
