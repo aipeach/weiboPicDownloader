@@ -3,13 +3,14 @@
 Forked from https://github.com/nondanee/weiboPicDownloader
 
 Major improvements:
-* Now can download posts with more than 9 pictures, also fixed some bugs
-* Cleanup text from the weibo when used in name template
+* Now can download posts with more than 9 pictures.
+* Cleanup text from the Weibo text content when used in name template.
 * Refactored as a module for easier incorporating into other Python scripts/projects. It now returns a list of dict to show some stats from the download session too.
+* Various bug fixes.
 
 Breaking changes:
 * Dropped Python 2 support (only tested with 3.8, but should work with some earlier versions too)
-* `-b` (boundary) now is NON-inclusive on the left-side (earlier date). This is done to make it easier to update (so you can use `-b last_checked_bid:` to only download new posts without overlapping). `-b` with s specific mid/bid (instead of a range) would still download that specific post.
+* `-b` (boundary) now is NON-inclusive on the left-side (earlier date). This is done to make it easier to update (so you can use `-b last_checked_bid:` to only download new posts without overlapping). `-b` with a specific mid/bid (instead of a range) would still download (always and only) that specific single post.
 
 Weibo user album batch download tool (CLI)
 
@@ -74,7 +75,7 @@ Optional arguments
 - `-v` download miaopai videos at the same time
 - `-o` overwrite existing files (skipping if exists for default)
 
-## ✳How to get the value of `SUB` from browser (Chrome for example)
+## How to get the value of `SUB` from browser (Chrome for example)
 
 1. Go to https://m.weibo.cn and log in
 2. Inspect > Application > Cookies > https://m.weibo.cn
