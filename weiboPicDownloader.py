@@ -457,7 +457,7 @@ def main(*paras):
 
         result.update(info)
 
-        album = base / safeify(info['nickname'])
+        album = base / safeify(result['nickname'])
         if resources and not album.exists(): album.mkdir()
         retry = 0
         while resources and retry <= args.retry:
