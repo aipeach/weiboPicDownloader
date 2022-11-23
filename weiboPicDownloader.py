@@ -139,6 +139,7 @@ def progress(part, whole, percent = False):
 def request_fit(method, url, max_retry = 0, cookie = None, stream = False):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.80 Mobile Safari/537.36',
+        'Referer': 'https://weibo.com',
         'Cookie': cookie
     }
     return requests.request(method, url, headers = headers, stream = stream, verify = False)
